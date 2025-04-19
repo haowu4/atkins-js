@@ -1,0 +1,43 @@
+{
+  "name": "atkins",
+  "version": "0.0.1",
+  "description": "Some service wrappers for MongoDB.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "atkins",
+    "membership",
+    "user",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/mongodb": "^4.0.7",
+    "bcrypt": "^5.1.1",
+    "mongodb": "^6.15.0"
+  },
+  "devDependencies": {
+    "@types/dockerode": "^3.3.38",
+    "@types/jest": "^29.5.14",
+    "dockerode": "^4.0.6",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2",
+    "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
