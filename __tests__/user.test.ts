@@ -1,6 +1,7 @@
 import { Db } from 'mongodb';
 import { setupTestDB, cleanupTestDB } from './setup';
 import { UserService } from '../src/services/user';
+import {generatePasswordHash} from "../src/utils/security";
 
 describe('UserService', () => {
     let db: Db;
@@ -41,14 +42,16 @@ describe('UserService', () => {
     describe('verifyUserPassword', () => {
         it('should verify correct password', async () => {
             await userService.createUser('testuser', 'test@example.com', 'password123');
-            const isValid = await userService.verifyUserPassword('testuser', 'password123');
-            expect(isValid).toBe(true);
+            const userRecord = await userService.verifyUserPassword('testuser', 'password123');
+            expect(userRecord?.user).toBe('testuser');
+            expect(userRecord?.email).toBe('test@example.com');
+            expect(userRecord?.verified).toBe(false);
         });
 
         it('should reject incorrect password', async () => {
             await userService.createUser('testuser', 'test@example.com', 'password123');
             const isValid = await userService.verifyUserPassword('testuser', 'wrongpassword');
-            expect(isValid).toBe(false);
+            expect(isValid).toBe(null);
         });
     });
 
@@ -58,8 +61,10 @@ describe('UserService', () => {
             const updated = await userService.updateUserPassword('testuser', 'newpassword');
             expect(updated).toBe(true);
 
-            const isValid = await userService.verifyUserPassword('testuser', 'newpassword');
-            expect(isValid).toBe(true);
+            const userRecord = await userService.verifyUserPassword('testuser', 'newpassword');
+            expect(userRecord?.user).toBe('testuser');
+            expect(userRecord?.email).toBe('test@example.com');
+            expect(userRecord?.verified).toBe(false);
         });
     });
 
